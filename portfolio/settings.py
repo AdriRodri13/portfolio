@@ -93,3 +93,5 @@ CSRF_TRUSTED_ORIGINS = [
     "https://portfolio-portfolio.up.railway.app",
 ]
 
+if not all([CLOUDINARY_STORAGE.get("CLOUD_NAME"), CLOUDINARY_STORAGE.get("API_KEY"), CLOUDINARY_STORAGE.get("API_SECRET")]):
+    raise Exception("❌ Cloudinary no está configurado correctamente. Revisa tus variables de entorno.")
