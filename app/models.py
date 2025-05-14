@@ -17,7 +17,7 @@ class ParrafoProyecto(models.Model):
     proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, related_name='parrafos')
     titulo = models.CharField(max_length=200)
     contenido = models.TextField()
-    imagen = models.ImageField(upload_to='proyectos/parrafos/', blank=True, null=True)
+    imagen = models.ImageField(storage=MediaCloudinaryStorage(),upload_to='proyectos/parrafos/', blank=True, null=True)
     descripcion_imagen = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
