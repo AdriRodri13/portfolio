@@ -1,0 +1,106 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Proyectos | Adrian Rodriguez{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'app/css/proyectos.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Encabezado de la sección -->
+<section class="page-header fade-in">
+    <div class="container">
+        <h1 class="text-center">Proyectos</h1>
+        <div class="section-divider mx-auto"></div>
+        <p class="text-center header-description">
+            Aquí puedes explorar los proyectos en los que he trabajado. Cada proyecto representa una oportunidad de aprendizaje y crecimiento profesional.
+        </p>
+    </div>
+</section>
+
+<!-- Filtros de proyectos -->
+<section class="filters-section fade-in">
+    <div class="container">
+        <div class="filters-container">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="web">Web</button>
+            <button class="filter-btn" data-filter="python">Python</button>
+            <button class="filter-btn" data-filter="django">Django</button>
+            <button class="filter-btn" data-filter="api">APIs</button>
+        </div>
+    </div>
+</section>
+
+<!-- Listado de proyectos -->
+<section class="projects-section fade-in">
+    <div class="container">
+        <div class="row projects-grid">
+            {% if proyectos %}
+                {% for proyecto in proyectos %}
+                <div class="col-lg-4 col-md-6 mb-4 project-item" data-category="web">
+                    <div class="project-card">
+                        {% if proyecto.imagen_principal %}
+                        <div class="project-image">
+                            <img src="{{ proyecto.imagen_principal.url }}" alt="{{ proyecto.titulo }}">
+                        </div>
+                        {% else %}
+                        <div class="project-image no-image">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="project-content">
+                            <h3 class="project-title">{{ proyecto.titulo }}</h3>
+                            <p class="project-description">{{ proyecto.descripcion|truncatechars:100 }}</p>
+                            <div class="tech-tags">
+                                {% for tecnologia in proyecto.tecnologias_proyecto.all %}
+                                    <span class="tech-tag">{{ tecnologia.nombre }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="project-overlay">
+                            <div class="project-overlay-content">
+                                <a href="{% url 'detalle_proyecto' proyecto.id %}" class="btn-ver">Ver detalles</a>
+                                {% if proyecto.github_url %}
+                                <a href="{{ proyecto.github_url }}" class="btn-github" target="_blank">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="col-12 text-center no-projects">
+                <div class="empty-state">
+                    <i class="fas fa-folder-open"></i>
+                    <h3>No hay proyectos disponibles</h3>
+                    <p>Actualmente no hay proyectos para mostrar. Vuelve pronto para ver las novedades.</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Sección de llamada a la acción -->
+<section class="cta-section fade-in">
+    <div class="container">
+        <div class="cta-container">
+            <div class="cta-content">
+                <h2>¿Tienes un proyecto en mente?</h2>
+                <p>Si necesitas ayuda con algún proyecto o tienes alguna idea que quieras desarrollar, estaré encantado de ayudarte.</p>
+                <a href="{% url 'contacto' %}" class="btn btn-primary btn-lg">Contactar</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'app/js/proyectos.js' %}"></script>
+{% endblock %}

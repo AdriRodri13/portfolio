@@ -1,0 +1,160 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Adrian Rodriguez | Desarrollador Web{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'app/css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section fade-in">
+    <div class="row align-items-center">
+        <div class="col-lg-5 col-md-6 mb-4 mb-md-0">
+            <div class="profile-image-container">
+                <img class="profile-image" src="{% static 'app/images/adrian.jpg' %}" alt="Adrian Rodriguez Garcia">
+            </div>
+        </div>
+        <div class="col-lg-7 col-md-6">
+            <div class="hero-content">
+                <h1 class="mb-2">Adrian Rodriguez Garcia</h1>
+                <h2 class="text-accent mb-3">Web Developer, Front y Backend</h2>
+                <p class="mb-4"><i class="fa-solid fa-location-dot me-2"></i>Alicante, España</p>
+                <div class="social-links">
+                    <a href="mailto:Adridev88@gmail.com" class="btn btn-outline-primary me-2">
+                        <i class="fas fa-envelope me-2"></i>Adridev88@gmail.com
+                    </a>
+                    <a href="{% static 'app/cv/Adrian Rodriguez CV.pdf' %}" class="social-icon" title="Curriculum Vitae">
+                        <i class="fa-solid fa-file"></i>
+                    </a>
+                    <a href="https://github.com/AdriRodri13/" class="social-icon" title="GitHub">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/adrián-rodríguez-web-developer/" class="social-icon" title="LinkedIn">
+                        <i class="fa-brands fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="sobremi" class="content-section fade-in">
+    <div class="section-header">
+        <h2>Sobre mí</h2>
+        <div class="section-divider"></div>
+    </div>
+    <div class="section-content">
+        <p class="about-text">
+            Soy un Desarrollador formándome constantemente para ganar experiencia en este amplio mundillo. Estoy capacitado para aprender y desarrollar en las últimas tecnologías del mercado (tanto FrontEnd como Backend), por lo que me considero una persona altamente cualificada para ello. ¡Echa un ojo de vez en cuando que seguro que tengo algún proyecto nuevo que enseñar!
+        </p>
+    </div>
+</section>
+
+
+<!-- Technologies Section -->
+{% if tecnologias %}
+<section class="content-section fade-in">
+    <div class="section-header">
+        <h2>Tecnologías</h2>
+        <div class="section-divider"></div>
+    </div>
+    <div class="section-content">
+        <div class="tech-container">
+            {% for tecnologia in tecnologias %}
+            <div class="tech-item">
+                <div class="tech-icon">
+                    <i class="{{ tecnologia.icono }}"></i>
+                </div>
+                <span class="tech-name">{{ tecnologia.nombre }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if formaciones %}
+<!-- Education Section -->
+<section class="content-section fade-in">
+    <div class="section-header">
+        <h2>Formación</h2>
+        <div class="section-divider"></div>
+    </div>
+    <div class="section-content">
+        <div class="timeline">
+            {% for formacion in formaciones %}
+            <div class="timeline-item">
+                <div class="timeline-icon">
+                    <i class="{{ formacion.icono }}"></i>
+                </div>
+                <div class="timeline-content">
+                    <h3>{{ formacion.titulo }}</h3>
+                    <h4>{{ formacion.centro }}</h4>
+                    <p>{{ formacion.descripcion }}</p>
+                    <span class="timeline-date">{{ formacion.anio }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+<!-- Projects Section -->
+<section class="content-section fade-in">
+    <div class="section-header">
+        <h2>Proyectos Destacados</h2>
+        <div class="section-divider"></div>
+    </div>
+    <div class="section-content">
+        <div class="row projects-container">
+            {% if proyectos %}
+                {% for proyecto in proyectos %}
+                <div class="col-md-4 mb-4">
+                    <div class="project-card">
+                        {% if proyecto.imagen_principal %}
+                            <div class="project-image">
+                                <img src="{{ proyecto.imagen_principal.url }}" alt="Imagen proyecto {{proyecto.titulo}}">
+                            </div>
+                        {% else %}
+                            <div class="project-image no-image">
+                                <i class="fas fa-code"></i>
+                            </div>
+                        {% endif %}
+                        <div class="project-body">
+                            <h3 class="project-title">{{ proyecto.titulo }}</h3>
+                            <p class="project-description">{{ proyecto.descripcion }}</p>
+                            <div class="project-links">
+                                <a href="{% url 'detalle_proyecto' proyecto.id %}" class="btn btn-primary">Ver detalles</a>
+                                {% if proyecto.github_url %}
+                                    <a href="{{ proyecto.github_url }}" class="btn btn-outline-secondary" target="_blank">
+                                        <i class="fab fa-github me-1"></i> GitHub
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center">
+                    <p>No hay proyectos disponibles actualmente.</p>
+                </div>
+            {% endif %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'proyectos' %}" class="btn btn-outline-primary btn-lg">
+                Ver todos los proyectos <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'app/js/index.js' %}"></script>
+{% endblock %}

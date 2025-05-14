@@ -1,0 +1,185 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}{{ proyecto.titulo }} | Adrian Rodriguez{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'app/css/detalle_proyecto.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Encabezado del proyecto -->
+<section class="project-header fade-in">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <div class="header-content">
+                    <a href="{% url 'proyectos' %}" class="back-link">
+                        <i class="fas fa-arrow-left"></i> Volver a proyectos
+                    </a>
+                    <h1 class="project-title">{{ proyecto.titulo }}</h1>
+                    <div class="project-meta">
+                        <span class="project-date">
+                            <i class="fas fa-calendar-alt"></i> {{ proyecto.creado_en|date:"F Y" }}
+                        </span>
+                        
+                        {% if proyecto.github_url %}
+                        <a href="{{ proyecto.github_url }}" target="_blank" class="project-github">
+                            <i class="fab fa-github"></i> Ver en GitHub
+                        </a>
+                        {% endif %}
+                    </div>
+                    <p class="project-description">{{ proyecto.descripcion }}</p>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="project-image-container">
+                    {% if proyecto.imagen_principal %}
+                    <img src="{{ proyecto.imagen_principal.url }}" alt="{{ proyecto.titulo }}" class="project-image">
+                    {% else %}
+                    <div class="project-image-placeholder">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    {% endif %}
+                    <div class="image-decoration"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tecnologías utilizadas -->
+<section class="technologies-section fade-in">
+    <div class="container">
+        <div class="section-divider"></div>
+        <h2 class="section-title">Tecnologías utilizadas</h2>
+        
+        <div class="tech-container">
+            {% if proyecto.tecnologias_proyecto.all %}
+                {% for tecnologia in proyecto.tecnologias_proyecto.all %}
+                <div class="tech-item">
+                    <div class="tech-icon">
+                        <i class="{{ tecnologia.icono }}"></i>
+                    </div>
+                    <span class="tech-name">{{ tecnologia.nombre }}</span>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="tech-item">
+                    <div class="tech-icon">
+                        <i class="fa-brands fa-html5"></i>
+                    </div>
+                    <span class="tech-name">HTML5</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">
+                        <i class="fa-brands fa-css3-alt"></i>
+                    </div>
+                    <span class="tech-name">CSS3</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">
+                        <i class="fa-brands fa-js"></i>
+                    </div>
+                    <span class="tech-name">JavaScript</span>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Contenido detallado del proyecto -->
+<section class="project-content fade-in">
+    <div class="container">
+        <div class="section-divider"></div>
+        <h2 class="section-title">Desarrollo del proyecto</h2>
+        
+        <div class="content-container">
+            {% if proyecto.parrafos.all %}
+                {% for parrafo in proyecto.parrafos.all %}
+                <div class="content-block {% cycle 'left-image' 'right-image' %}">
+                    {% if parrafo.imagen %}
+                    <div class="content-image">
+                        <img src="{{ parrafo.imagen.url }}" alt="{{ parrafo.descripcion_imagen }}">
+                        {% if parrafo.descripcion_imagen %}
+                        <div class="image-caption">{{ parrafo.descripcion_imagen }}</div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="content-text">
+                        <h3 class="content-title">{{ parrafo.titulo }}</h3>
+                        {{ parrafo.contenido|linebreaks }}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="content-placeholder">
+                    <div class="placeholder-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <p>No hay contenido detallado disponible para este proyecto.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Conclusión del proyecto -->
+<section class="conclusion-section fade-in">
+    <div class="container">
+        <div class="conclusion-container">
+            <div class="conclusion-icon">
+                <i class="fas fa-lightbulb"></i>
+            </div>
+            <h2 class="section-title">Conclusión</h2>
+            <div class="conclusion-content">
+                {% if proyecto.conclusion %}
+                    {{ proyecto.conclusion|linebreaks }}
+                {% else %}
+                    <p>Este proyecto ha sido una gran oportunidad para aplicar y mejorar mis habilidades de desarrollo. 
+                    A través de su implementación, he podido enfrentar y resolver diversos desafíos técnicos, 
+                    lo que me ha permitido crecer como profesional en el campo del desarrollo web.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Navegación entre proyectos -->
+<section class="project-navigation fade-in">
+    <div class="container">
+        <div class="navigation-links">
+            <a href="#" class="prev-project">
+                <i class="fas fa-chevron-left"></i>
+                <span>Proyecto anterior</span>
+            </a>
+            
+            <a href="{% url 'proyectos' %}" class="all-projects">
+                <i class="fas fa-th"></i>
+                <span>Todos los proyectos</span>
+            </a>
+            
+            <a href="#" class="next-project">
+                <span>Siguiente proyecto</span>
+                <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Sección de contacto -->
+<section class="contact-section fade-in">
+    <div class="container">
+        <div class="contact-container">
+            <h2>¿Te interesa este proyecto?</h2>
+            <p>Si tienes alguna pregunta o te gustaría discutir más sobre este proyecto, no dudes en contactarme.</p>
+            <a href="#" class="btn btn-primary btn-lg">Contactar</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'app/js/detalle_proyecto.js' %}"></script>
+{% endblock %}
