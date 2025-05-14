@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 # Create your models here.
 class Proyecto(models.Model):
@@ -6,7 +7,7 @@ class Proyecto(models.Model):
     descripcion = models.TextField(help_text="Breve descripción del proyecto")
     conclusion = models.TextField(help_text="Conclusion del desarrollo", blank=True, null=True)
     github_url = models.URLField(blank=True, null=True)
-    imagen_principal = models.ImageField(upload_to='proyectos/', blank=True, null=True)
+    imagen_principal = models.ImageField(storage=MediaCloudinaryStorage(),upload_to='proyectos/', blank=True, null=True)
     creado_en = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
